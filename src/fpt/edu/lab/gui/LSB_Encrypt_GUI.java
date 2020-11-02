@@ -310,7 +310,7 @@ public class LSB_Encrypt_GUI extends javax.swing.JFrame {
     private void jbtnBrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnBrowseActionPerformed
         JFileChooser fileChooser = new JFileChooser();
         //lọc những file image trong hộp thoại chooser
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("*.Images", "bmp", "jpg", "gif", "png");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("*.Images", "bmp", "jpg", "jpeg", "png");
         fileChooser.setAcceptAllFileFilterUsed(false);
         fileChooser.addChoosableFileFilter(filter);
         int file = fileChooser.showSaveDialog(null);
@@ -325,9 +325,21 @@ public class LSB_Encrypt_GUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jbtnBrowseActionPerformed
 
+    private boolean checkValidImg(String imgPath) {
+        return imgPath.endsWith("png") || imgPath.endsWith("jpg") || imgPath.endsWith("jpeg") || imgPath.endsWith("bmp");
+    }
+    
     private void jbtnHideMessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnHideMessActionPerformed
         String message = jtxtSecretMess.getText();
         String imgPath = jtxtOriginalPath.getText();
+        if ("".equals(imgPath)) {
+            JOptionPane.showMessageDialog(this, "Please selected imgage to encrypt");
+            return;
+        }
+        if (!checkValidImg(imgPath)) {
+            JOptionPane.showMessageDialog(this, "Please choose a valid imgage to encrypt");
+            return;
+        }
         if (EncryptionControl.encrypt(message, imgPath)) {
             JOptionPane.showMessageDialog(this, "Encrypt successfully!");
             jlbStegoDisplay.setIcon(resizeImage("stego.png", jlbStegoDisplay));
