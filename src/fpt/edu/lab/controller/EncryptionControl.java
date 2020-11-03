@@ -100,7 +100,7 @@ public class EncryptionControl {
                 }
             }
         }
-        //ghi lại ảnh
+        //ghi lại ảnh mới với định dạng png
         try {
             isChange = ImageIO.write(theImage, "png", new File(stegoPath));
         } catch (IOException ex) {
@@ -127,9 +127,7 @@ public class EncryptionControl {
         blueBinary = blueBinary.substring(0, blueBinary.length() - 1);
         //thay đổi số binary thứ 8 của blue binary thành bit của message
         blueBinary = blueBinary + Integer.toString(writeBitBlue);
-        //chuyển chuỗi binary thành số hệ thập phân
         int newBlue = Integer.parseInt(blueBinary, 2);
-
         //lấy pixel mới từ mã màu rgb sau khi thay đổi
         return rgbToPixel(red, newGreen, newBlue);
     }

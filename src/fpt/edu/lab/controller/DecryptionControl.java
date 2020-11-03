@@ -53,7 +53,7 @@ public class DecryptionControl {
         String bitMessageLength = "";
         for (int x = 0; x < yImage.getWidth(); x++) {
             for (int y = 0; y < yImage.getHeight(); y++) {
-                //lấy length của message từ tọa độ (0;0) đến (0;4)
+                //lấy length của message từ tọa độ (0;0) đến (0;3)
                 if (x == 0 && y < 4) {
                     //lấy pixel từ tọa độ (x;y)
                     int currentPixel = yImage.getRGB(x, y);
@@ -67,7 +67,7 @@ public class DecryptionControl {
                     if (y == 3) {
                         lengthMessage = Integer.parseInt(bitMessageLength, 2);
                     }
-                    //lấy message từ tọa độ (0;4) đến hết ảnh
+                    //lấy message từ tọa độ (0;3) đến hết ảnh
                 } else if (currentBitEntry < lengthMessage * 8) {
                     //lấy pixel từ tọa độ (x;y)
                     int currentPixel = yImage.getRGB(x, y);
