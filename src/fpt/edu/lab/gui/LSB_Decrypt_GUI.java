@@ -258,6 +258,10 @@ public class LSB_Decrypt_GUI extends javax.swing.JFrame {
 
     private void jbtnShowHiddenMessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnShowHiddenMessActionPerformed
         String imgPath = jtxtStegoImagePath.getText();
+        if (imgPath == null) {
+            JOptionPane.showMessageDialog(this, "Please Choose a imgae");
+            return;
+        }
         String message = DecryptionControl.decrypt(imgPath);
         if (message == null) {
             JOptionPane.showMessageDialog(this, "Error Decrypt");
@@ -267,7 +271,7 @@ public class LSB_Decrypt_GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jbtnShowHiddenMessActionPerformed
 
     private void jbtnBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnBackActionPerformed
-       new MainFrame().setVisible(true);
+        new MainFrame().setVisible(true);
         dispose();
     }//GEN-LAST:event_jbtnBackActionPerformed
 

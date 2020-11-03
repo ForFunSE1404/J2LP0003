@@ -49,7 +49,7 @@ public class EncryptionControl {
             int ascii = msg.charAt(i);
             //chuyển ascii sang binary
             String wordBinary = Integer.toBinaryString(ascii);
-            //cộng thêm 0 vào đầu nếu như wordBinary chưa đủ 8
+            //đảm bảo bit phải đủ 8 kí tự
             while (wordBinary.length() != 8) {
                 wordBinary = '0' + wordBinary;
             }
@@ -67,37 +67,36 @@ public class EncryptionControl {
         int bitLength = bits.length / 8;
         byte[] bitLengthMessage = new byte[8];
         String bitLengthStr = Integer.toBinaryString(bitLength);
+        //đảm bảo bit phải đủ 8 kí tự
         while (bitLengthStr.length() != 8) {
             bitLengthStr = '0' + bitLengthStr;
         }
         for (int i = 0; i < 8; i++) {
             bitLengthMessage[i] = Byte.parseByte("" + bitLengthStr.charAt(i));
         }
-        int j = 0;
         int i = 0;
-        int currentBitEntry = 8;
+        int currentBitEntry = 0;
         for (int x = 0; x < theImage.getWidth(); x++) {
             for (int y = 0; y < theImage.getHeight(); y++) {
-                //ghi (length của binary message sau khi rút gọn) vào tọa độ từ (0:0) đến (0:8) 
-                if (x == 0 && y < 8) {
+                //ghi (length của binary message sau khi rút gọn) vào tọa độ từ (0:0) đến (0:3) 
+                if (x == 0 && y < 4) {
                     //lấy pixel trên ảnh tại tọa độ (x, y)
                     int currentPixel = theImage.getRGB(x, y);
-                    int newPixel = changePixel(currentPixel, bitLengthMessage[i++]);
+                    int newPixel = changePixel(currentPixel, bitLengthMessage[i++], bitLengthMessage[i++]);
                     if (newPixel != currentPixel) {
                         //đặt lại màu mới tại tọa độ (x,y)
                         theImage.setRGB(x, y, newPixel);
                     }
-                    //ghi chuỗi binary message vào tọa độ từ (0:8) trở đi
-                } else if (currentBitEntry < bits.length + 8) {
+                    //ghi chuỗi binary message vào tọa độ từ (0:3) trở đi
+                } else if (currentBitEntry < bits.length) {
                     //lấy pixel trên ảnh tại tọa độ (x, y)
                     int currentPixel = theImage.getRGB(x, y);
-                    int newPixel = changePixel(currentPixel, bits[j++]);
+                    int newPixel = changePixel(currentPixel, bits[currentBitEntry++], bits[currentBitEntry++]);
                     //đặt lại màu mới tại tọa độ (x,y)
                     if (newPixel != currentPixel) {
                         //đặt lại màu mới tại tọa độ (x,y)
                         theImage.setRGB(x, y, newPixel);
                     }
-                    currentBitEntry++;
                 }
             }
         }
@@ -109,21 +108,30 @@ public class EncryptionControl {
         return isChange;
     }
 
-    public static int changePixel(int currentPixel, int writeBit) {
-        //lấy pixel trên ảnh tại tọa độ (x, y)
+    public static int changePixel(int currentPixel, int writeBitGreen, int writeBitBlue) {
         //lấy mã màu rgb từ pixel
         Color color = new Color(currentPixel, true);
         int red = color.getRed();
         int green = color.getGreen();
+        //chuyển mã green thành chuỗi binary
+        String greenBinary = Integer.toBinaryString(green);
+        //lấy 7 chữ số đầu của dãy green binary
+        greenBinary = greenBinary.substring(0, greenBinary.length() - 1);
+        //thay đổi số binary thứ 8 của green binary thành bit của message
+        greenBinary = greenBinary + Integer.toString(writeBitGreen);
+        int newGreen = Integer.parseInt(greenBinary, 2);
         int blue = color.getBlue();
         //chuyển mã blue thành chuỗi binary
         String blueBinary = Integer.toBinaryString(blue);
+        //lấy 7 chữ số đầu của dãy blue binary
         blueBinary = blueBinary.substring(0, blueBinary.length() - 1);
-        blueBinary = blueBinary + Integer.toString(writeBit);
+        //thay đổi số binary thứ 8 của blue binary thành bit của message
+        blueBinary = blueBinary + Integer.toString(writeBitBlue);
         //chuyển chuỗi binary thành số hệ thập phân
-        int bluePixel = Integer.parseInt(blueBinary, 2);
+        int newBlue = Integer.parseInt(blueBinary, 2);
+
         //lấy pixel mới từ mã màu rgb sau khi thay đổi
-        return rgbToPixel(red, green, bluePixel);
+        return rgbToPixel(red, newGreen, newBlue);
     }
 
     public static int rgbToPixel(int red, int green, int blue) {

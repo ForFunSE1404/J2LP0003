@@ -11,7 +11,6 @@ import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.logging.Level;
@@ -34,7 +33,6 @@ public class LSB_Encrypt_GUI extends javax.swing.JFrame {
     public LSB_Encrypt_GUI() {
         initComponents();
         setLocationRelativeTo(null);
-
     }
 
     private ImageIcon resizeImage(String ImagePath, JLabel label) {
@@ -58,15 +56,16 @@ public class LSB_Encrypt_GUI extends javax.swing.JFrame {
         jpnHidingData = new javax.swing.JPanel();
         jlbTitle = new javax.swing.JLabel();
         jlbSecretText = new javax.swing.JLabel();
-        jlbOriginalImagePath = new javax.swing.JLabel();
         jtxtSecretMess = new javax.swing.JTextField();
         jtxtOriginalPath = new javax.swing.JTextField();
         jbtnBrowse = new javax.swing.JButton();
+        jlbOriginalImagePath1 = new javax.swing.JLabel();
         jpnOriginalImage = new javax.swing.JPanel();
         jlbOriginalImage = new javax.swing.JLabel();
         jpnOriginalDisplay = new javax.swing.JPanel();
         jlbOriginalDisplay = new javax.swing.JLabel();
         jbtnHideMess = new javax.swing.JButton();
+        jlbMessage = new javax.swing.JLabel();
         jpnStegoImage = new javax.swing.JPanel();
         jlbStegoImage = new javax.swing.JLabel();
         jpnStegoDisplay = new javax.swing.JPanel();
@@ -85,12 +84,9 @@ public class LSB_Encrypt_GUI extends javax.swing.JFrame {
         jlbSecretText.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
         jlbSecretText.setText("Secret Text:");
 
-        jlbOriginalImagePath.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
-        jlbOriginalImagePath.setText("Original image file:");
-
         jtxtSecretMess.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
         jtxtSecretMess.setForeground(java.awt.Color.gray);
-        jtxtSecretMess.setText("<<a secret message>>");
+        jtxtSecretMess.setText("<<enter a secret message>>");
         jtxtSecretMess.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 jtxtSecretMessFocusGained(evt);
@@ -110,6 +106,9 @@ public class LSB_Encrypt_GUI extends javax.swing.JFrame {
             }
         });
 
+        jlbOriginalImagePath1.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
+        jlbOriginalImagePath1.setText("Original image file:");
+
         javax.swing.GroupLayout jpnHidingDataLayout = new javax.swing.GroupLayout(jpnHidingData);
         jpnHidingData.setLayout(jpnHidingDataLayout);
         jpnHidingDataLayout.setHorizontalGroup(
@@ -127,11 +126,14 @@ public class LSB_Encrypt_GUI extends javax.swing.JFrame {
                                 .addComponent(jbtnBrowse))
                             .addComponent(jtxtSecretMess)))
                     .addGroup(jpnHidingDataLayout.createSequentialGroup()
-                        .addGroup(jpnHidingDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jlbTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jlbOriginalImagePath))
+                        .addComponent(jlbTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(jpnHidingDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jpnHidingDataLayout.createSequentialGroup()
+                    .addGap(20, 20, 20)
+                    .addComponent(jlbOriginalImagePath1)
+                    .addContainerGap(586, Short.MAX_VALUE)))
         );
         jpnHidingDataLayout.setVerticalGroup(
             jpnHidingDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -144,10 +146,14 @@ public class LSB_Encrypt_GUI extends javax.swing.JFrame {
                     .addComponent(jtxtSecretMess, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(20, 20, 20)
                 .addGroup(jpnHidingDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlbOriginalImagePath)
                     .addComponent(jtxtOriginalPath, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbtnBrowse, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(20, Short.MAX_VALUE))
+            .addGroup(jpnHidingDataLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnHidingDataLayout.createSequentialGroup()
+                    .addContainerGap(115, Short.MAX_VALUE)
+                    .addComponent(jlbOriginalImagePath1)
+                    .addGap(16, 16, 16)))
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -186,14 +192,20 @@ public class LSB_Encrypt_GUI extends javax.swing.JFrame {
             }
         });
 
+        jlbMessage.setFont(new java.awt.Font("Arial", 0, 15)); // NOI18N
+        jlbMessage.setForeground(new java.awt.Color(255, 0, 0));
+
         javax.swing.GroupLayout jpnOriginalImageLayout = new javax.swing.GroupLayout(jpnOriginalImage);
         jpnOriginalImage.setLayout(jpnOriginalImageLayout);
         jpnOriginalImageLayout.setHorizontalGroup(
             jpnOriginalImageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpnOriginalImageLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jpnOriginalImageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jbtnHideMess)
+                .addGroup(jpnOriginalImageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jpnOriginalImageLayout.createSequentialGroup()
+                        .addComponent(jbtnHideMess)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jlbMessage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jpnOriginalImageLayout.createSequentialGroup()
                         .addGap(9, 9, 9)
                         .addComponent(jlbOriginalImage, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -208,8 +220,12 @@ public class LSB_Encrypt_GUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jpnOriginalDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jbtnHideMess, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jpnOriginalImageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpnOriginalImageLayout.createSequentialGroup()
+                        .addComponent(jbtnHideMess, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jlbMessage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -294,7 +310,7 @@ public class LSB_Encrypt_GUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jtxtSecretMessFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtxtSecretMessFocusGained
-        if (jtxtSecretMess.getText().equals("<<a secret message>>")) {
+        if (jtxtSecretMess.getText().equals("<<enter a secret message>>")) {
             jtxtSecretMess.setText("");
             jtxtSecretMess.setForeground(Color.BLACK);
         }
@@ -303,7 +319,7 @@ public class LSB_Encrypt_GUI extends javax.swing.JFrame {
     private void jtxtSecretMessFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtxtSecretMessFocusLost
         if (jtxtSecretMess.getText().isEmpty()) {
             jtxtSecretMess.setForeground(Color.GRAY);
-            jtxtSecretMess.setText("<<a secret message>>");
+            jtxtSecretMess.setText("<<enter a secret message>>");
         }
     }//GEN-LAST:event_jtxtSecretMessFocusLost
 
@@ -328,7 +344,7 @@ public class LSB_Encrypt_GUI extends javax.swing.JFrame {
     private boolean checkValidImg(String imgPath) {
         return imgPath.endsWith("png") || imgPath.endsWith("jpg") || imgPath.endsWith("jpeg") || imgPath.endsWith("bmp");
     }
-    
+
     private void jbtnHideMessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnHideMessActionPerformed
         String message = jtxtSecretMess.getText();
         String imgPath = jtxtOriginalPath.getText();
@@ -341,9 +357,10 @@ public class LSB_Encrypt_GUI extends javax.swing.JFrame {
             return;
         }
         if (EncryptionControl.encrypt(message, imgPath)) {
-            JOptionPane.showMessageDialog(this, "Encrypt successfully!");
+            JOptionPane.showMessageDialog(this, "Encrypt Success.....");
             jlbStegoDisplay.setIcon(resizeImage("stego.png", jlbStegoDisplay));
-
+        } else {
+            JOptionPane.showMessageDialog(this, "Encrypt Fail.....");
         }
 
     }//GEN-LAST:event_jbtnHideMessActionPerformed
@@ -358,18 +375,24 @@ public class LSB_Encrypt_GUI extends javax.swing.JFrame {
             int fileSave = fileChooser.showSaveDialog(this);
             if (fileSave == JFileChooser.APPROVE_OPTION) {
                 File fileToSave = fileChooser.getSelectedFile();
+                //check đuôi image có phải là định dạng png hay không
                 if (!fileToSave.getAbsolutePath().endsWith(".png")) {
                     JOptionPane.showMessageDialog(this, "Encrypt Image must be png image!");
-                    return;
                 } else {
                     checkPng = true;
                 }
                 try {
-                    Files.copy(Paths.get("stego.png"), Paths.get(fileToSave.getAbsolutePath()), StandardCopyOption.REPLACE_EXISTING);
-                    JOptionPane.showMessageDialog(this, "Save Success");
+                    if (checkPng) {
+                        //copy ảnh stego sang địa chỉ mới mà user chọn.
+                        Files.copy(Paths.get("stego.png"), Paths.get(fileToSave.getAbsolutePath()), StandardCopyOption.REPLACE_EXISTING);
+                        JOptionPane.showMessageDialog(this, "Save Success");
+                    }
                 } catch (IOException ex) {
                     Logger.getLogger(LSB_Encrypt_GUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            }
+            if (fileSave == JFileChooser.CANCEL_OPTION) {
+                return;
             }
         }
     }//GEN-LAST:event_jbtnSaveStegoImageActionPerformed
@@ -385,9 +408,10 @@ public class LSB_Encrypt_GUI extends javax.swing.JFrame {
     private javax.swing.JButton jbtnBrowse;
     private javax.swing.JButton jbtnHideMess;
     private javax.swing.JButton jbtnSaveStegoImage;
+    private javax.swing.JLabel jlbMessage;
     private javax.swing.JLabel jlbOriginalDisplay;
     private javax.swing.JLabel jlbOriginalImage;
-    private javax.swing.JLabel jlbOriginalImagePath;
+    private javax.swing.JLabel jlbOriginalImagePath1;
     private javax.swing.JLabel jlbSecretText;
     private javax.swing.JLabel jlbStegoDisplay;
     private javax.swing.JLabel jlbStegoImage;

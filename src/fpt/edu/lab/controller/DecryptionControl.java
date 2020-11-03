@@ -5,7 +5,6 @@
  */
 package fpt.edu.lab.controller;
 
-import static fpt.edu.lab.controller.EncryptionControl.rgbToPixel;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -54,33 +53,40 @@ public class DecryptionControl {
         String bitMessageLength = "";
         for (int x = 0; x < yImage.getWidth(); x++) {
             for (int y = 0; y < yImage.getHeight(); y++) {
-                //lấy length của message từ tọa độ (0;0) đến (0;8)
-                if (x == 0 && y < 8) {
+                //lấy length của message từ tọa độ (0;0) đến (0;4)
+                if (x == 0 && y < 4) {
                     //lấy pixel từ tọa độ (x;y)
                     int currentPixel = yImage.getRGB(x, y);
-                    bitMessageLength += getLastBit(currentPixel);
-                    if (y == 7) {
+                    Color color = new Color(currentPixel, true);
+                    //lấy màu green từ pixel
+                    int green = color.getGreen();
+                    bitMessageLength += getLastBit(green, currentPixel);
+                    //lấy màu blue từ pixel
+                    int blue = color.getBlue();
+                    bitMessageLength += getLastBit(blue, currentPixel);
+                    if (y == 3) {
                         lengthMessage = Integer.parseInt(bitMessageLength, 2);
                     }
-                    //lấy message từ tọa độ (0;8) đến hết ảnh
+                    //lấy message từ tọa độ (0;4) đến hết ảnh
                 } else if (currentBitEntry < lengthMessage * 8) {
                     //lấy pixel từ tọa độ (x;y)
                     int currentPixel = yImage.getRGB(x, y);
-                    bitMessage += getLastBit(currentPixel);
-                    currentBitEntry++;
+                    Color color = new Color(currentPixel, true);
+                    int green = color.getGreen();
+                    //lấy bit được giấu trong green binary
+                    bitMessage += getLastBit(green, currentBitEntry++);
+                    //lấy màu blue từ pixel
+                    int blue = color.getBlue();
+                    //lấy bit được giấu trong blue binary
+                    bitMessage += getLastBit(blue, currentBitEntry++);
                 }
             }
         }
         return bitMessage;
     }
 
-    public static char getLastBit(int currentPixel) {
-        //lấy mã màu rgb từ pixel
-        Color color = new Color(currentPixel, true);
-        //lấy màu blue từ pixel
-        int blue = color.getBlue();
-        //lấy binary của mã màu blue
-        String binary = Integer.toBinaryString(blue);
+    public static char getLastBit(int colorCode, int currentPixel) {
+        String binary = Integer.toBinaryString(colorCode);
         //lấy bit cuối cùng của binary blue
         return binary.charAt(binary.length() - 1);
     }
